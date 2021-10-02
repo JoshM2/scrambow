@@ -1,6 +1,7 @@
 import { Scrambow } from '../src/scrambow';
 import * as util from '../src/util';
-import { scramblers, aliases } from '../src/scramblers';
+import { scramblers, scramblerAliases } from '../src/scramblers';
+import { Scramble, Scrambler } from '../src/types';
 
 describe('Scrambow', () => {
   let scrambler: Scrambow;
@@ -89,12 +90,12 @@ describe('Scrambow', () => {
       it('should get the type name from aliases', () => {
         const aliasName = 'test-alias';
         const expectedType = 'alias';
-        aliases[aliasName] = expectedType;
+        scramblerAliases[aliasName] = expectedType;
 
         scrambler.setType(aliasName);
 
         expect(scrambler.type).toEqual(expectedType);
-        delete aliases[aliasName];
+        delete scramblerAliases[aliasName];
       });
 
       it('should keep old type if no value is given', () => {
@@ -603,6 +604,55 @@ describe('Scrambow', () => {
           const result = getScramble('fto', expectedLength);
           expect(getScrambleLength(result)).toEqual(expectedLength);
         });
+      });
+    });
+  });
+
+  describe('registerCustomScrambler', () => {
+    const customScramblerName = 'test';
+    const customScramblerAliases = ['custom', 'cool-new-thing'];
+    const customScambleText = 'test custom scramble';
+    const customScrambler: Scrambler = (() => {
+      const initialize = () => () => { /* do nothing */ };
+      const setRandomSource = () => { /* do nothing */ };
+      const setScrambleLength = () => { /* do nothing */ };
+      const getRandomScramble = (): Scramble => ({ scramble_string: customScambleText });
+
+      return {
+        initialize,
+        setRandomSource,
+        setScrambleLength,
+        getRandomScramble
+      };
+    })();
+
+    beforeEach(() => {
+      scrambler.registerCustomScrambler(
+        customScramblerName,
+        customScrambler,
+        customScramblerAliases
+      );
+    });
+
+
+    it('should generate a scramble with the custom scrambler', () => {
+      const [scramble] = scrambler.setType(customScramblerName).get();
+
+      expect(scramble.scramble_string).toEqual(customScambleText);
+    });
+
+    it('should generate multiple scrambles from the custom scrambler', () => {
+      const numScrambles = 5;
+      const scrambles = scrambler.setType(customScramblerName).get(numScrambles);
+
+      expect(scrambles.length).toBe(numScrambles);
+    });
+
+    it('should generate a scramble with the custom scrambler aliases', () => {
+      customScramblerAliases.forEach(alias => {
+        const [scramble] = scrambler.setType(alias).get();
+
+        expect(scramble.scramble_string).toEqual(customScambleText);
       });
     });
   });

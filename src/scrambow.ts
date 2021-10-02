@@ -1,6 +1,6 @@
 import { hashCode } from './util';
-import { scramblers, aliases } from './scramblers';
-import { Seed, Scramble } from './types';
+import { scramblers, scramblerAliases, register } from './scramblers';
+import { Seed, Scramble, Scrambler } from './types';
 
 export class Scrambow {
   type = '333';
@@ -15,7 +15,9 @@ export class Scrambow {
 
   init(): void {
     if (!scramblers.hasOwnProperty(this.type)) {
-      throw new Error(`Invalid scrambler, allowed: ${Object.keys(scramblers).join(', ')}`);
+      throw new Error(
+        `Invalid scrambler, allowed: ${Object.keys(scramblers).join(', ')}`
+      );
     }
 
     scramblers[this.type].initialize(this.seed);
@@ -24,7 +26,7 @@ export class Scrambow {
   get(num = 1): Scramble[] {
     const stack = Array<Scramble>(num);
 
-    for(let i = 0; i < num; i++) {
+    for (let i = 0; i < num; i++) {
       stack[i] = scramblers[this.type].getRandomScramble(this.args);
     }
 
@@ -45,8 +47,8 @@ export class Scrambow {
 
   private getType(type: string) {
     const lowerType = type.toLowerCase();
-    if (aliases.hasOwnProperty(lowerType)) {
-      return aliases[lowerType];
+    if (scramblerAliases.hasOwnProperty(lowerType)) {
+      return scramblerAliases[lowerType];
     }
     return lowerType;
   }
@@ -63,7 +65,7 @@ export class Scrambow {
       random() {
         const x = Math.sin(hash++) * 10000;
         return x - Math.floor(x);
-      }
+      },
     };
 
     this.init();
@@ -91,5 +93,13 @@ export class Scrambow {
     this.args = args;
 
     return this;
+  }
+
+  registerCustomScrambler(
+    name: string,
+    scrambler: Scrambler,
+    aliases: string[] = []
+  ): void {
+    register(scramblers, scramblerAliases)(name, scrambler, aliases);
   }
 }
