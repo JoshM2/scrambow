@@ -1,7 +1,9 @@
-import cli from 'commander';
+import { Command } from 'commander';
 import { Scrambow } from './scrambow';
 import { Scramble } from './types';
 import { version, name } from '../package.json';
+
+const cli = new Command();
 
 cli
   .name(name)
@@ -16,22 +18,26 @@ cli
 const out = new Scrambow();
 let scrambles: Scramble[];
 
+const { type, seed, length, number } = cli.opts();
+
 try {
-  out.setType(cli.type);
+  out.setType(type);
   out.setArgs(...cli.args);
-  if (cli.seed) {
-    out.setSeed(cli.seed);
+  if (seed) {
+    out.setSeed(seed);
   }
-  if (cli.length) {
-    out.setLength(cli.length);
+  if (length) {
+    out.setLength(length);
   }
 } catch (error) {
-  console.error(error.message);
+  if (error instanceof Error) {
+    console.error(error.message);
+  }
   process.exit(1);
 }
 
-if (cli.number) {
-  scrambles = out.get(cli.number);
+if (number) {
+  scrambles = out.get(number);
 } else {
   scrambles = out.get();
 }

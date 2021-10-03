@@ -1,15 +1,16 @@
-const UglifyJsPlugin  = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: {
-    scrambow: './src/scrambow.ts',
+    scrambow: './src/index.ts',
     cli: './src/cli.ts'
   },
   target: 'node',
   mode: 'none',
-  plugins: [
-    new UglifyJsPlugin()
-  ],
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  },
   resolve: {
     extensions: [".ts", ".js"]
   },
@@ -17,7 +18,7 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        use: ["ts-loader", "eslint-loader"],
+        use: ["ts-loader"],
         exclude: /node_modules/
       },
       {
