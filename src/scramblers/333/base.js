@@ -10,8 +10,8 @@
  * rewritten for es6 and documented by Caleb Hoover;
  *
  */
-const { swap, createArray } = require('./util/helpers');
-const { coSubsets } = require('./util/coSubsets');
+import { swap, createArray } from './util/helpers';
+import { coSubsets } from './util/coSubsets';
 
 var scrambler = (function () {
   var _;
