@@ -41,6 +41,8 @@ scrambow -t zz -n 12 0 6 12
 ## Node.js
 ```bash
 npm install scrambow
+# or
+yarn add scrambow
 ```
 ```javascript
 var Scrambow = require('scrambow').Scrambow;
@@ -56,6 +58,46 @@ console.log(threebythree.get(5)); // Returns 5 scrambles
 .setSeed(num); // Repeatable scrambles.
 .setLength(num); // Set scramble length, currently only for NNN, minx scrambles.
 .setArgs(...args); // Set scramble args for 2gll, cls, trizbll, tsle, zbll and zz
+
+.registerCustomScrambler(name, scrambler, aliases = []) // used to register custom scramblers
+```
+
+### Adding custom scramblers
+Scrambow allows adding custom scramblers as long as they include the follwing 4 functions:
+* initialize(randomSrc)
+  * Function that sets the random source and runs any other initialization for the scrambler
+* setRandomSource(randomSrc)
+  * Function to set how random numbers are generated (usually Math.random)
+* setScrambleLength(length)
+  * Function to set how long scrambles are (if needed)
+* getRandomScramble(args)
+  * Function used to generate scrambles. Accepts a list of args that can be used to modify the scrambler's behavior (e.g. only generate Sune CMLLs)
+
+`initialize`, `setRandomSource` and `setScrambleLength` can all be pass through functions, but they must exist because they will always be called
+
+```javascript
+// Example
+const myCustomScrambler = (() => {
+  const initialize = () => { /* do nothing */ };
+  const setRandomSource = () => { /* do nothing */ };
+  const setScrambleLength = () => { /* do nothing */ };
+  const getRandomScramble = () => ({ scramble_string: 'cool scramble' });
+
+  return {
+    initialize,
+    setRandomSource,
+    setScrambleLength,
+    getRandomScramble
+  };
+})();
+```
+The custom scrambler can then be added to Scrambow using `registerCustomScrambler`
+
+```javascript
+const scrambow = new Scrambow();
+scrambow.registerCustomScrambler('myCustomScrambler', myCustomScrambler)
+
+scrambow.setType('myCustomScrambler').get(); // { scramble_string: 'cool scramble' }
 ```
 
 ## Scramblers

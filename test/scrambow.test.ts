@@ -613,7 +613,7 @@ describe('Scrambow', () => {
     const customScramblerAliases = ['custom', 'cool-new-thing'];
     const customScambleText = 'test custom scramble';
     const customScrambler: Scrambler = (() => {
-      const initialize = () => () => { /* do nothing */ };
+      const initialize = () => { /* do nothing */ };
       const setRandomSource = () => { /* do nothing */ };
       const setScrambleLength = () => { /* do nothing */ };
       const getRandomScramble = (): Scramble => ({ scramble_string: customScambleText });
