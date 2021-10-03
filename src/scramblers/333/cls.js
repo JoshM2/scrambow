@@ -98,7 +98,7 @@ const cls = function (register) {
 
     return {
       initialize: scrambler.initialize,
-      setRandomSrc: scrambler.setRandomSrc,
+      setRandomSource: scrambler.setRandomSource,
       getRandomScramble: function (args) {
         return {
           scramble_string: getCLSScramble(args)

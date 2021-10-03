@@ -8,11 +8,10 @@ export interface Seed {
 }
 
 export interface Scrambler {
-  version?: string;
-  initialize: (randomSource: Seed) => (...args: unknown[]) => void | void;
+  initialize: (randomSource: Seed) => void;
   setRandomSource: (randomSource: Seed) => void;
-  getRandomScramble: (args?: string[]) => Scramble;
   setScrambleLength: (length: number) => void;
+  getRandomScramble: (args?: string[]) => Scramble;
 }
 
 export type ScramblerAliases = Record<string, string>;

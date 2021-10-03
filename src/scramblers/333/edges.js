@@ -13,7 +13,7 @@ const edges = function (register) {
 
     return {
       initialize: scrambler.initialize,
-      setRandomSrc: scrambler.setRandomSrc,
+      setRandomSource: scrambler.setRandomSource,
       getRandomScramble: function () {
         return {
           scramble_string: getEdgeScramble()

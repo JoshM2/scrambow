@@ -1684,8 +1684,11 @@ var scrambler = (function () {
   }
 
   return {
-    initialize: function (randomSrc) { initialized = false; return ini(undefined, randomSrc); },
-    setRandomSrc,
+    initialize: function (randomSrc) {
+      initialized = false;
+      return ini(undefined, randomSrc);
+    },
+    setRandomSource: setRandomSrc,
     setScrambleLength: function () { return; },
     customScramble,
     customScramble2,
