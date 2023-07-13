@@ -1,5 +1,5 @@
 # Contribution Guide
 
 - Pull Requests welcome
-- Please use yarn as your package manager
+- Please use vanilla npm as your package manager
 - Don't break the unit tests 👻

@@ -1,6 +1,6 @@
 {
   "name": "scrambow",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Javascript Rubik's Cube Scramble Generator",
   "repository": {
     "type": "git",
@@ -32,7 +32,7 @@
     "build": "webpack",
     "postbuild": "node scripts/addSheBang.js dist/cli.js",
     "lint": "eslint . --ext .ts",
-    "prepare": "yarn build"
+    "prepare": "npm run build"
   },
   "dependencies": {
     "commander": "^8.2.0"
