@@ -18,4 +18,5 @@ export default function (register) {
   pyra(register);
   skewb(register);
   sq1(register);
+  clockOptimal(register);
 }
