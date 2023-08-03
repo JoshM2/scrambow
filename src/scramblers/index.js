@@ -7,6 +7,7 @@ import minx from './minx';
 import pyra from './pyram';
 import skewb from './skewb';
 import sq1 from './sq1';
+import clockOptimal from './clockOptimal'
 
 export default function (register) {
   scramble222(register);
